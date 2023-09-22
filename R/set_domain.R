@@ -23,13 +23,11 @@ set_domain <- function(domain) {
 #'
 get_domain<- function() {
   env_var <- Sys.getenv("ODS_API_DOMAIN")
-  if(env_var!=""){
-    return(env_var)
-  }
+
   domain <- tryCatch({
     get("domain", user)
   },error = function(cond){
-    ""
+    env_var
   })
   return(domain)
 }
