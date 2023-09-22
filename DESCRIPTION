@@ -1,0 +1,17 @@
+Package: odsAPI
+Type: Package
+Title: An API wrapper package to download data directly from data portals created by Opendatasoft <https://www.opendatasoft.com/en/>
+Version: 0.1.0
+Author: Felix Lorenz
+Maintainer: Felix Lorenz <ogd@tg.ch>
+Description: Use the API of the data platforms created by Opendatasoft.
+    Download Open Government Data (OGD), the data catalog, specific records or perform queries on datasets.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    httr,
+    jsonlite
+Depends: 
+    R (>= 2.10)
+RoxygenNote: 7.2.1
