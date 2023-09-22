@@ -2,24 +2,38 @@
 % Please edit documentation in R/query_catalog.R
 \name{query_catalog}
 \alias{query_catalog}
-\title{Query Catalog with ODSQL}
+\title{Query Data Catalog}
 \usage{
-query_catalog(domain = NULL, query)
+query_catalog(domain = NULL, ...)
 }
 \arguments{
 \item{domain}{domain of the portal (z.B. data.tg.ch)}
 
-\item{query}{a query based on the ODSQL Syntax}
+\item{...}{
+  Arguments passed on to \code{\link[=create_query]{create_query}}
+  \describe{
+    \item{\code{search_in}}{The column(s) the function should search in for the substring specified in `search_for`}
+    \item{\code{search_for}}{The substring the function should search for in the columns specified in `search_in`. If `search_in` is NULL then it will be searched in all columns. This parameter cannot be NULL if `search_in` is specified.}
+    \item{\code{order_by}}{Order the results by a column}
+    \item{\code{asc}}{If TRUE the results will be ordered in ascending order. If FALSE the order will be descending. This parameter is only relevant if `order_by` is specified. Default is FALSE}
+    \item{\code{select}}{One or multiple columns that should be selected and be part of the final result. Can be a vector or a single string.}
+    \item{\code{date_start}}{A string in the form of YYYY-MM-DD or YYYY that represents the start of the date range. `date_var` must be specified, otherwise this parameter won't be evaluated. If `date_end` is not specified, all dataset records from this date on will be returned.}
+    \item{\code{date_end}}{A string in the form of YYYY-MM-DD or YYYY that represents the start of the date range. `date_var` must be specified, otherwise this parameter won't be evaluated. If `date_start` is not specified, all dataset records up to this date will be returned.}
+    \item{\code{date_var}}{The variable to which `date_end` and `date_end` refer. Prameter will only be evaluated if either `date_end` or `date_start` is specified}
+    \item{\code{filter_query}}{A query string where binary operators can be used (see \href{https://help.opendatasoft.com/apis/ods-explore-v2/#section/ODSQL-predicates/Text-comparison-operators}{ODS cocumentation on binary operators}). This can either be a string or a vector of multiple strings. For example 'einwohner>=100' or c('einwohner>=100','gemeinde_name="Aadorf"'). Please note that if you use the equal sign for a string, the string has to be enquoted inside the already enqueted query string(e.g. 'gemeinde_name="Aadorf"' and NOT 'gemeinde_name=Aadorf')}
+  }}
 }
 \value{
-A Dataframe with the content from the defined query
+A data.frame with the content from the defined query
 }
 \description{
-Instead of downlaoding the whole catalog and all variables, it is also possible to use ODSQL and perform specific queries.
+Query data catalog to select and filter a catalog on ODS
 }
 \examples{
 \dontrun{
-query_catalog(domain = "data.tg.ch", query = "select=dataset_id,title&where=suggest(dataset_id,'sk')&limit=100")
+
+query_catalog(domain = "data.tg.ch", search_for="siedlung", search_in="title")
 
 }
+
 }

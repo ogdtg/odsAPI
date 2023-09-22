@@ -36,7 +36,7 @@ create_query(
 \item{filter_query}{A query string where binary operators can be used (see \href{https://help.opendatasoft.com/apis/ods-explore-v2/#section/ODSQL-predicates/Text-comparison-operators}{ODS cocumentation on binary operators}). This can either be a string or a vector of multiple strings. For example 'einwohner>=100' or c('einwohner>=100','gemeinde_name="Aadorf"'). Please note that if you use the equal sign for a string, the string has to be enquoted inside the already enqueted query string(e.g. 'gemeinde_name="Aadorf"' and NOT 'gemeinde_name=Aadorf')}
 }
 \value{
-A String containing a valid query which can later be joined with the URL to the APIO endpoint.
+A String containing a valid query which can later be joined with the URL to the API endpoint.
 }
 \description{
 Creates a dataset query to query the datasets from ODS. It is possible to search for specific strings, select columns, select a date range and order the results by a variable

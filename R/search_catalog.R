@@ -1,11 +1,11 @@
 #' Search the Catalog for specific Searchterms
 #'
-#' @description Search for specific searchterms in one or more columns of the catalog. Return only those columns yoou select in the select_cols argument.
+#' @description This is a wrapper for query_catalog: search for specific searchterms in one or more columns of the catalog. Return only those columns you select in the select_cols argument.
 #'
 #' @inheritParams set_domain
-#' @param searchterm A string you want to search for in the catalog
-#' @param search_in Columns in which the function should search for the given searchterm. This can either be one or several columns. The columns must be present in the select_cols param, too. The default column to search in is the dataset title (`title`)
-#' @param select_cols The columns the function should return. If none is given, the function will return all columns from the catalog.
+#' @param search_for The substring the function should search for in the columns specified in `search_in`. If `search_in` is NULL then it will be searched in all columns. This parameter cannot be NULL if `search_in` is specified.
+#' @param search_in The column(s) the function should search in for the substring specified in `search_for`. The default column to search in is the dataset title (`title`)
+#' @param select One or multiple columns that should be selected and be part of the final result. Can be a vector or a single string.
 #'
 #' @return A data.frame containing the matching datasets
 #' @export
@@ -15,26 +15,15 @@
 #'
 #' set_domain("data.tg.ch")
 #'
-#' search_catalog(searchterm = "siedlung",select_cols = c("dataset_id","title"))
+#' search_catalog(search_for = "siedlung",select = c("dataset_id","title"))
 #' }
 #'
 #'
 #'
-search_catalog <- function(domain = NULL,searchterm,search_in = "title",select_cols=NULL) {
+search_catalog <- function(domain = NULL,search_for,search_in = "title",select=NULL) {
 
 
-
-  search_cols <- paste0(search_in,collapse = ",")
-
-  query <- paste0("where=suggest(",search_cols,",'",searchterm,"')&limit=100")
-
-  if (!is.null(select_cols)){
-    selects <- paste0(select_cols,collapse = ",")
-    select_query <- paste0("select=",selects,"&")
-    query <- paste0(select_query,query)
-  }
-
-  data <- query_catalog(domain=domain,query=query)
+  data <- query_catalog(domain = domain,search_in=search_in,search_for=search_for,select=select)
   return(data)
 }
 

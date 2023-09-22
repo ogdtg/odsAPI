@@ -12,7 +12,7 @@
 #' @param date_var The variable to which `date_end` and `date_end` refer. Prameter will only be evaluated if either `date_end` or `date_start` is specified
 #' @param filter_query A query string where binary operators can be used (see \href{https://help.opendatasoft.com/apis/ods-explore-v2/#section/ODSQL-predicates/Text-comparison-operators}{ODS cocumentation on binary operators}). This can either be a string or a vector of multiple strings. For example 'einwohner>=100' or c('einwohner>=100','gemeinde_name="Aadorf"'). Please note that if you use the equal sign for a string, the string has to be enquoted inside the already enqueted query string(e.g. 'gemeinde_name="Aadorf"' and NOT 'gemeinde_name=Aadorf')
 #'
-#' @return A String containing a valid query which can later be joined with the URL to the APIO endpoint.
+#' @return A String containing a valid query which can later be joined with the URL to the API endpoint.
 #'
 #' @examples
 #' \dontrun{
@@ -81,7 +81,7 @@ create_query <- function(search_in=NULL,search_for=NULL,order_by=NULL,asc=FALSE,
 
   }
 
-  where_query_part <- paste0(search_query,date_query,filter_query_part,collapse = " AND ")
+  where_query_part <- paste0(c(search_query,date_query,filter_query_part),collapse = " AND ")
   where_query <- paste0("where=",where_query_part)
 
   # Select

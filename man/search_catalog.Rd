@@ -4,34 +4,29 @@
 \alias{search_catalog}
 \title{Search the Catalog for specific Searchterms}
 \usage{
-search_catalog(
-  domain = NULL,
-  searchterm,
-  search_in = "title",
-  select_cols = NULL
-)
+search_catalog(domain = NULL, search_for, search_in = "title", select = NULL)
 }
 \arguments{
 \item{domain}{domain of the portal (z.B. data.tg.ch)}
 
-\item{searchterm}{A string you want to search for in the catalog}
+\item{search_for}{The substring the function should search for in the columns specified in `search_in`. If `search_in` is NULL then it will be searched in all columns. This parameter cannot be NULL if `search_in` is specified.}
 
-\item{search_in}{Columns in which the function should search for the given searchterm. This can either be one or several columns. The columns must be present in the select_cols param, too. The default column to search in is the dataset title (`title`)}
+\item{search_in}{The column(s) the function should search in for the substring specified in `search_for`. The default column to search in is the dataset title (`title`)}
 
-\item{select_cols}{The columns the function should return. If none is given, the function will return all columns from the catalog.}
+\item{select}{One or multiple columns that should be selected and be part of the final result. Can be a vector or a single string.}
 }
 \value{
 A data.frame containing the matching datasets
 }
 \description{
-Search for specific searchterms in one or more columns of the catalog. Return only those columns yoou select in the select_cols argument.
+This is a wrapper for query_catalog: search for specific searchterms in one or more columns of the catalog. Return only those columns you select in the select_cols argument.
 }
 \examples{
 \dontrun{
 
 set_domain("data.tg.ch")
 
-search_catalog(searchterm = "siedlung",select_cols = c("dataset_id","title"))
+search_catalog(search_for = "siedlung",select = c("dataset_id","title"))
 }
 
 

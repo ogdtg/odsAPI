@@ -1,53 +1,47 @@
-#' Query Catalog with ODSQL
+#' Query Data Catalog
 #'
-#' @description Instead of downlaoding the whole catalog and all variables, it is also possible to use ODSQL and perform specific queries.
+#' @description Query data catalog to select and filter a catalog on ODS
 #'
 #' @inheritParams set_domain
-#' @param query a query based on the ODSQL Syntax
+#' @inheritDotParams create_query
 #'
-#' @return A Dataframe with the content from the defined query
+#' @return A data.frame with the content from the defined query
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' query_catalog(domain = "data.tg.ch", query = "select=dataset_id,title&where=suggest(dataset_id,'sk')&limit=100")
+#'
+#' query_catalog(domain = "data.tg.ch", search_for="siedlung", search_in="title")
 #'
 #' }
-query_catalog <- function(domain = NULL,query){
-
-
-
-  limit <- 100
-  offset <- 0
-  total <- 100
+#'
+query_catalog <- function(domain = NULL,...){
 
   domain <- check_domain(domain)
 
-  # If there is a limit in the query then account for it
-  if(!grepl("limit=",query)){
-    query <- paste0(query,"&limit=100")
-  } else {
-    matches <-gregexpr("&limit=(\\d.+)",query)
-    extracted <- regmatches(query, matches)[[1]]
-    limit = as.numeric(gsub("&limit=","",extracted))
-    total = limit
-  }
 
-  query <- URLencode(query)
+  full_query <- create_query(...)
+  url_part <- paste0("https://",
+                     domain,
+                     "/api/explore/",
+                     current_version,
+                     "/catalog/datasets?",
+                     query)
 
-  url <- paste0("https://",
-                domain,
-                "/api/explore/",
-                current_version,
-                "/catalog/datasets?",
-                query)
+  url <- paste0(url_part,"&limit=100")
 
   res <- httr::GET(url)
 
   temp_result <- httr::content(res,as = "text")
   temp_result <- jsonlite::fromJSON(temp_result)
+
   count <- temp_result$total_count
   data <- temp_result$results
+
+  limit <- 100
+  offset <- 0
+  total <- 100
+
 
 
   if (res$status_code!=200){
