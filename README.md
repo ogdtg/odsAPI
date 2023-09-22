@@ -24,7 +24,7 @@ For example if you use the domain *"data.tg.ch"* the functions will create Endpo
 You can set and use domains in three different ways:
 
 
-1. Write it to the `.Renviron` File
+#### Write it to the `.Renviron` File
 
 If you have one domain you want to access most of the time it is best to write a system variable to the `.Renviron` file. In this case your domain will be set over sessions and you won't have to worry about it ever again.
 
@@ -52,7 +52,7 @@ data <- get_dataset(dataset_id = "sk-stat-111")
 
 ```
 
-2. Use `set_domain()`
+#### Use `set_domain()`
 
 If you do not want to set your domain permanently for all future sessions, you can use `set_domain()`. This will set the domain for the current session. Of course, you can always overwrite this setting by using another `set_domain()` command. Please note that your `ODS_API_DOMAIN` variable from the `.Renviron` file will be ignored if you use `set_domain()` as long as the current session runs.
 
@@ -67,7 +67,7 @@ data <- get_dataset(dataset_id = "sk-stat-111")
 
 ```
 
-3. Direct use in the function
+#### Direct use in the function
 
 Every function has also a `domain` parameter, where you can set the domain directly. Domains set with set_domain or via the `.Renviron` file are ignored in this case.
 
