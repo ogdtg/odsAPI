@@ -37,7 +37,7 @@ query_dataset <- function(domain = NULL,dataset_id,...){
 
 
   if (res$status_code!=200){
-    stop(paste0("Error: ",result$error_code,": ",result$message))
+    stop(paste0("Error: ",temp_result$error_code,": ",temp_result$message))
   }
   if (count==0){
     stop("No Data available.")
@@ -52,7 +52,7 @@ query_dataset <- function(domain = NULL,dataset_id,...){
       offset <- offset + limit
       total <- offset +limit
 
-      query <- URLencode(paste0(query,"&offset=",offset))
+      full_query <- URLencode(paste0(full_query,"&offset=",offset))
 
       url <- paste0(url_part,"&limit=",limit,"&offset=",offset)
 
