@@ -17,9 +17,6 @@ is_ods_domain <- function(domain){
   domain <- gsub("http://","",domain)
   domain <- gsub("http:/","",domain)
 
-  if(domain %in% swiss_ods_domains$domain){
-    return(domain)
-  }
 
   res <- tryCatch({
     httr::GET(paste0("https://",domain,"/api/explore/",current_version,"/"))
