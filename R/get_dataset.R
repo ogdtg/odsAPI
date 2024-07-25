@@ -16,7 +16,7 @@ get_dataset <- function(domain=NULL,dataset_id){
 
   domain <- check_domain(domain)
 
-  url <- paste0("https://",domain,"/api/explore/",current_version,"/catalog/datasets/",dataset_id,"/exports/json")
+  url <- paste0("https://",domain,"/api/explore/",odsAPI::current_version,"/catalog/datasets/",dataset_id,"/exports/json")
 
 
 

@@ -1,14 +1,14 @@
 #' Query dataset
 #'
-#' @description Query a dataset and use [ODSQL Syntax](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)) to refine your query. With this function, it is possible to download only the needed part of the dataset.
+#' @description Query a dataset and use \href{https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)}{ODSQL Syntax} to refine your query. With this function, it is possible to download only the needed part of the dataset.
 #'
 #' @param dataset_id ID of the dataset to query.
-#' @param ... Where clause parameters. See [ODSQL where clause](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Where-clause). You can also use `from` and `to` to select a timespan. The function will automatically use the first variable of type date and apply the timespan on that variable.
-#' @param group_by_fields Vector of fields to group by. See [ODSQL Group by clause](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Group-by-clause).
-#' @param order_by_fields Vector of fields to order by. See [ODSQL Order by clause](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Order-by-clause).
-#' @param select_fields Vector of fields to be selected. See [ODSQL select clause](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Select-clause).
+#' @param ... Where clause parameters. See \href{https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Where-clause}{ODSQL where clause}. You can also use `from` and `to` to select a timespan. The function will automatically use the first variable of type date and apply the timespan on that variable.
+#' @param group_by_fields Vector of fields to group by. See \href{https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Group-by-clause}{ODSQL Group by clause}.
+#' @param order_by_fields Vector of fields to order by. See \href{https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Order-by-clause}{ODSQL Order by clause}.
+#' @param select_fields Vector of fields to be selected. See \href{https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Select-clause}{ODSQL select clause}.
 #' @param .domain Domain of the ODS API.
-#' @param predicates See [ODSQL predicates](https://help.opendatasoft.com/apis/ods-explore-v2/#section/ODSQL-predicates).
+#' @param predicates See \href{https://help.opendatasoft.com/apis/ods-explore-v2/#section/ODSQL-predicates}{ODSQL predicates}.
 #' @param key API key for authentication.
 #'
 #' @return A dataset.
@@ -35,7 +35,7 @@ query_dataset <- function(.domain=NULL, dataset_id, group_by_fields=NULL, order_
   fields <- odsAPI::get_fields(dataset_id = dataset_id)
   date_field <- fields$name[which(fields$type == "date")][1]
 
-  base_url <- paste0("https://", domain, "/api/explore/v2.1/catalog/datasets/", dataset_id, "/exports/csv?where=")
+  base_url <- paste0("https://", domain, "/api/explore/",odsAPI::current_version,"/catalog/datasets/", dataset_id, "/exports/csv?where=")
   query_list <- list(...)
 
   where_clause <- sapply(seq_along(query_list), function(i) {

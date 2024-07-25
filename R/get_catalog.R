@@ -18,7 +18,7 @@ get_catalog <- function(domain = NULL){
 
   domain <- check_domain(domain)
 
-  res = httr::GET(paste0("https://",domain,"/api/explore/",current_version,"/catalog/exports/json"))
+  res = httr::GET(paste0("https://",domain,"/api/explore/",odsAPI::current_version,"/catalog/exports/json"))
 
   if (res$status_code!=200){
     stop(paste0("The API returned an error (HTTP ERROR ",res$status_code,") . Please visit ",domain," for more information"))

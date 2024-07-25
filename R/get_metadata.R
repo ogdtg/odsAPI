@@ -14,7 +14,7 @@ get_metadata <- function(domain=NULL,dataset_id){
 
   domain <- check_domain(domain)
 
-  res = httr::GET(paste0("https://",domain,"/api/explore/",current_version,"/catalog/datasets/",dataset_id))
+  res = httr::GET(paste0("https://",domain,"/api/explore/",odsAPI::current_version,"/catalog/datasets/",dataset_id))
 
   if (res$status_code!=200){
     stop(paste0("The API returned an error (HTTP ERROR ",res$status_code,") . Please visit ",domain," for more information"))

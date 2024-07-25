@@ -24,7 +24,7 @@ query_catalog <- function(domain = NULL,...){
   url_part <- paste0("https://",
                      domain,
                      "/api/explore/",
-                     current_version,
+                     odsAPI::current_version,
                      "/catalog/datasets?",
                      query)
 
@@ -65,7 +65,7 @@ query_catalog <- function(domain = NULL,...){
       url <- paste0("https://",
                     domain,
                     "/api/explore/",
-                    current_version,
+                    odsAPI::current_version,
                     "/catalog/datasets?",
                     query)
 

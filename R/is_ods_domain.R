@@ -19,7 +19,7 @@ is_ods_domain <- function(domain){
 
 
   res <- tryCatch({
-    httr::GET(paste0("https://",domain,"/api/explore/",current_version,"/"))
+    httr::GET(paste0("https://",domain,"/api/explore/",odsAPI::current_version,"/"))
     },error = function(cond){
       stop(paste0("domain ",domain," is not an ODS domain."))
     })

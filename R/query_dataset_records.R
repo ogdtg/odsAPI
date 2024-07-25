@@ -19,7 +19,7 @@ query_dataset_records <- function(domain = NULL,dataset_id,...){
 
 
   full_query <- create_query(...)
-  url_part <- paste0("https://",domain,"/api/explore/",current_version,"/catalog/datasets/",dataset_id,"/records?",full_query)
+  url_part <- paste0("https://",domain,"/api/explore/",odsAPI::current_version,"/catalog/datasets/",dataset_id,"/records?",full_query)
 
   url <- paste0(url_part,"&limit=100")
 

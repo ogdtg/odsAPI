@@ -20,23 +20,23 @@ query_dataset(
 
 \item{dataset_id}{ID of the dataset to query.}
 
-\item{group_by_fields}{Vector of fields to group by. See [ODSQL Group by clause](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Group-by-clause).}
+\item{group_by_fields}{Vector of fields to group by. See \href{https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Group-by-clause}{ODSQL Group by clause}.}
 
-\item{order_by_fields}{Vector of fields to order by. See [ODSQL Order by clause](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Order-by-clause).}
+\item{order_by_fields}{Vector of fields to order by. See \href{https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Order-by-clause}{ODSQL Order by clause}.}
 
-\item{select_fields}{Vector of fields to be selected. See [ODSQL select clause](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Select-clause).}
+\item{select_fields}{Vector of fields to be selected. See \href{https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Select-clause}{ODSQL select clause}.}
 
-\item{predicates}{See [ODSQL predicates](https://help.opendatasoft.com/apis/ods-explore-v2/#section/ODSQL-predicates).}
+\item{predicates}{See \href{https://help.opendatasoft.com/apis/ods-explore-v2/#section/ODSQL-predicates}{ODSQL predicates}.}
 
 \item{key}{API key for authentication.}
 
-\item{...}{Where clause parameters. See [ODSQL where clause](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Where-clause). You can also use `from` and `to` to select a timespan. The function will automatically use the first variable of type date and apply the timespan on that variable.}
+\item{...}{Where clause parameters. See \href{https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Where-clause}{ODSQL where clause}. You can also use `from` and `to` to select a timespan. The function will automatically use the first variable of type date and apply the timespan on that variable.}
 }
 \value{
 A dataset.
 }
 \description{
-Query a dataset and use [ODSQL Syntax](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)) to refine your query. With this function, it is possible to download only the needed part of the dataset.
+Query a dataset and use \href{https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)}{ODSQL Syntax} to refine your query. With this function, it is possible to download only the needed part of the dataset.
 }
 \examples{
 \dontrun{
