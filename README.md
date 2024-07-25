@@ -151,24 +151,19 @@ data <- get_dataset("sk-stat-111")
 
 ```
 
+### Query Dataset
+
+A very useful function is `query_dataset()`. With this function you can use ODSQL Syntax to filter and select specific columns, if you only need a part of the data.
 
 Similar to the catalog, you can query the records of each dataset. For instance:
 
 ```r
-# Workplaces by Sector and Political Municipality Canton Thurgau
-# Arbeitsstätten nach Sektoren und Politischen Gemeinden Kanton Thurgau
-
-
-querried_data <-
-  query_dataset(
-    dataset_id = "sk-stat-97",
-    filter_query = c("sektor=2", "arbeitsstaetten<10"),
-    date_start = "2010",
-    date_end = "2020",
-    date_var = "jahr",
-    order_by = "jahr",
-    asc = FALSE
-  )
+# All swiss residents in Frauenfeld from the rather large dataset
+query_dataset(
+  dataset_id = "sk-stat-134",
+  politische_gemeinde = "Frauenfeld",
+  select_fields = c("bfs_nr_gemeinde", "politische_gemeinde", "ortschaft" ,"einwohner_schweizer")
+)
 
 
 ```

@@ -39,8 +39,29 @@ query_dataset <- function(.domain=NULL, dataset_id, group_by_fields=NULL, order_
   query_list <- list(...)
 
   where_clause <- sapply(seq_along(query_list), function(i) {
+
+
+    # Var Name
     var <- names(query_list)[i]
+
+    # Value
     val <- query_list[[i]]
+
+    field_type <- fields$type[fields$name==var]
+
+
+    if (length(val)>1){
+      operator <- " IN "
+      if (field_type=="text"){
+        val <- paste0('"',val,'"')
+      }
+      val <- paste0("(",paste0(val,collapse = ","),")")
+
+    } else {
+      operator <- "="
+      val <- paste0("'", val, "'")
+    }
+
     if (is.null(val)) {
       NULL
     } else {
@@ -57,7 +78,7 @@ query_dataset <- function(.domain=NULL, dataset_id, group_by_fields=NULL, order_
           paste0(date_field, "<=date'", val, "' ")
         }
       } else {
-        paste0(var, "='", val, "'")
+        paste0(var, operator, val)
       }
     }
   }) %>% unlist() %>% paste0(collapse = "%20and%20")
