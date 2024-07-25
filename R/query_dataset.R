@@ -1,72 +1,105 @@
-#' Query Dataset records
+#' Query dataset
 #'
-#' @description Query dataset to select and filter a dataset on ODS
+#' @description Query a dataset and use [ODSQL Syntax](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)) to refine your query. With this function, it is possible to download only the needed part of the dataset.
 #'
-#' @inheritParams get_metadata
-#' @inheritDotParams create_query
+#' @param dataset_id ID of the dataset to query.
+#' @param ... Where clause parameters. See [ODSQL where clause](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Where-clause). You can also use `from` and `to` to select a timespan. The function will automatically use the first variable of type date and apply the timespan on that variable.
+#' @param group_by_fields Vector of fields to group by. See [ODSQL Group by clause](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Group-by-clause).
+#' @param order_by_fields Vector of fields to order by. See [ODSQL Order by clause](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Order-by-clause).
+#' @param select_fields Vector of fields to be selected. See [ODSQL select clause](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Select-clause).
+#' @param .domain Domain of the ODS API.
+#' @param predicates See [ODSQL predicates](https://help.opendatasoft.com/apis/ods-explore-v2/#section/ODSQL-predicates).
+#' @param key API key for authentication.
 #'
-#' @return A dataframe of records based on the query
+#' @return A dataset.
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#'
-#' query_dataset(dataset_id = "sk-stat-112",search_in="bezirk_bezeichnung",search_for="Frauenfeld",order_by="plz",asc=FALSE,select=c("bezirk_bezeichnung","plz","ortschaft"))
+#' dataset <- query_dataset(
+#'   dataset_id = "example_dataset",
+#'   group_by_fields = c("field1", "field2"),
+#'   order_by_fields = c("field3"),
+#'   select_fields = c("field1", "field2"),
+#'   .domain = "your_domain.opendatasoft.com",
+#'   key = "your_api_key",
+#'   from = "2020-01-01",
+#'   to = "2021-01-01"
+#' )
+#' print(dataset)
 #' }
-query_dataset <- function(domain = NULL,dataset_id,...){
+query_dataset <- function(.domain=NULL, dataset_id, group_by_fields=NULL, order_by_fields=NULL, select_fields=NULL, predicates=NULL, key=Sys.getenv("ODS_KEY"), ...) {
 
-  domain <- check_domain(domain)
+  domain <- odsAPI::check_domain(.domain)
 
+  fields <- odsAPI::get_fields(dataset_id = dataset_id)
+  date_field <- fields$name[which(fields$type == "date")][1]
 
-  full_query <- create_query(...)
-  url_part <- paste0("https://",domain,"/api/explore/",current_version,"/catalog/datasets/",dataset_id,"/records?",full_query)
+  base_url <- paste0("https://", domain, "/api/explore/v2.1/catalog/datasets/", dataset_id, "/exports/csv?where=")
+  query_list <- list(...)
 
-  url <- paste0(url_part,"&limit=100")
-
-  res <- httr::GET(url)
-
-  temp_result <- httr::content(res,as = "text")
-  temp_result <- jsonlite::fromJSON(temp_result)
-
-  count <- temp_result$total_count
-  data <- temp_result$results
-
-  limit <- 100
-  offset <- 0
-  total <- 100
-
-
-  if (res$status_code!=200){
-    stop(paste0("Error: ",temp_result$error_code,": ",temp_result$message))
-  }
-  if (count==0){
-    stop("No Data available.")
-  }
-
-
-  if (count>total){
-    result_list <- list(data)
-    names(result_list) <- paste0(offset)
-
-    while(count>total){
-      offset <- offset + limit
-      total <- offset +limit
-
-      full_query <- URLencode(paste0(full_query,"&offset=",offset))
-
-      url <- paste0(url_part,"&limit=",limit,"&offset=",offset)
-
-      res <- httr::GET(url)
-      temp_result <- httr::content(res,as = "text")
-      result_list[[paste0(offset)]] <- jsonlite::fromJSON(temp_result)$results
+  where_clause <- sapply(seq_along(query_list), function(i) {
+    var <- names(query_list)[i]
+    val <- query_list[[i]]
+    if (is.null(val)) {
+      NULL
+    } else {
+      if (var == "from") {
+        if (is.na(date_field)) {
+          NULL
+        } else {
+          paste0(date_field, ">=date'", val, "' ")
+        }
+      } else if (var == "to") {
+        if (is.na(date_field)) {
+          NULL
+        } else {
+          paste0(date_field, "<=date'", val, "' ")
+        }
+      } else {
+        paste0(var, "='", val, "'")
+      }
     }
+  }) %>% unlist() %>% paste0(collapse = "%20and%20")
 
-    data <- do.call(rbind,result_list)
-    rownames(data) <- NULL
+  predicates_clause <- NULL
+  if (!is.null(predicates)) {
+    predicates_clause <- predicates %>% paste0(collapse = "%20and%20")
+    if (where_clause == "") {
+      where_clause <- predicates_clause
+    } else {
+      where_clause <- paste0(where_clause, "%20and%20", predicates_clause)
+    }
   }
 
-  return(data)
+  group_by_clause <- NULL
+  if (!is.null(group_by_fields)) {
+    group_by_clause <- paste0(group_by_fields, collapse = "%2C") %>% paste0("&group_by=", .)
+  }
 
+  order_by_clause <- NULL
+  if (!is.null(order_by_fields)) {
+    order_by_clause <- paste0(order_by_fields, collapse = "%2C") %>% paste0("&order_by=", .)
+  }
+
+  select_clause <- NULL
+  if (!is.null(select_fields)) {
+    select_clause <- paste0(select_fields, collapse = "%2C") %>% paste0("&select=", .)
+  }
+
+  if (!is.null(key) && key != "") {
+    url <- paste0(base_url, where_clause, group_by_clause, order_by_clause, select_clause, "&limit=-1&apikey=", key) %>% gsub(replacement = "%20", pattern = " ")
+  } else {
+    url <- paste0(base_url, where_clause, group_by_clause, order_by_clause, select_clause, "&limit=-1") %>% gsub(replacement = "%20", pattern = " ")
+  }
+
+  result <- tryCatch({
+    read.table(url,stringsAsFactors = F,sep = ";",header = T,check.names = F,colClasses = "character")
+  }, error = function(cond){
+    response <- httr::GET(url)
+    httr::content(response)
+  })
+
+
+  return(result)
 }
-
-

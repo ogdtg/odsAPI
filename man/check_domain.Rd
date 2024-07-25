@@ -7,7 +7,7 @@
 check_domain(domain)
 }
 \arguments{
-\item{domain}{}
+\item{domain}{ODS domain}
 }
 \value{
 a ceaned domain without https/http/ prefix
@@ -17,7 +17,7 @@ Check the domain
 }
 \examples{
 
-\notrun{
+\dontrun{
 check_domain("data.tg.ch")
 }
 

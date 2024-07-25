@@ -7,7 +7,7 @@
 #' @export
 #'
 #' @examples
-#' \notrun{
+#' \dontrun{
 #' get_catalog("data.tg.ch")
 #'
 #' # If domain is already set

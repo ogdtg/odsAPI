@@ -16,7 +16,7 @@ a nested data.frame with metadata of all datasets publicly available on the plat
 Download the catalog with all available metadata of all publicly available datasets from the given domain
 }
 \examples{
-\notrun{
+\dontrun{
 get_catalog("data.tg.ch")
 
 # If domain is already set

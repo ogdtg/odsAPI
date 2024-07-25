@@ -1,13 +1,13 @@
 #' Check the domain
 #'
-#' @param domain
+#' @param domain ODS domain
 #'
 #' @return a ceaned domain without https/http/ prefix
 #' @export
 #'
 #' @examples
 #'
-#' \notrun{
+#' \dontrun{
 #' check_domain("data.tg.ch")
 #' }
 #'

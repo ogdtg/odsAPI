@@ -1,3 +1,6 @@
+[![R-CMD-check](https://github.com/ogdtg/odsAPI/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ogdtg/odsAPI/actions/workflows/R-CMD-check.yaml)
+
+
 # odsAPI
 The odsAPI R package serves as an API wrapper, allowing you to seamlessly access the Explore API (version 2.1) of all Opendatasoft customers.
 

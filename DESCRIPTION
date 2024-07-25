@@ -11,7 +11,8 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     httr,
-    jsonlite
+    jsonlite,
+    magrittr
 Depends: 
     R (>= 2.10)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3

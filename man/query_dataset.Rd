@@ -2,38 +2,54 @@
 % Please edit documentation in R/query_dataset.R
 \name{query_dataset}
 \alias{query_dataset}
-\title{Query Dataset records}
+\title{Query dataset}
 \usage{
-query_dataset(domain = NULL, dataset_id, ...)
+query_dataset(
+  .domain = NULL,
+  dataset_id,
+  group_by_fields = NULL,
+  order_by_fields = NULL,
+  select_fields = NULL,
+  predicates = NULL,
+  key = Sys.getenv("ODS_KEY"),
+  ...
+)
 }
 \arguments{
-\item{domain}{domain of the portal (z.B. data.tg.ch)}
+\item{.domain}{Domain of the ODS API.}
 
-\item{dataset_id}{the dataset_id of the given dataset. The dataset_id can be taken from the respective catalog that can be accessed via `get_catalog()`}
+\item{dataset_id}{ID of the dataset to query.}
 
-\item{...}{
-  Arguments passed on to \code{\link[=create_query]{create_query}}
-  \describe{
-    \item{\code{search_in}}{The column(s) the function should search in for the substring specified in `search_for`}
-    \item{\code{search_for}}{The substring the function should search for in the columns specified in `search_in`. If `search_in` is NULL then it will be searched in all columns. This parameter cannot be NULL if `search_in` is specified.}
-    \item{\code{order_by}}{Order the results by a column}
-    \item{\code{asc}}{If TRUE the results will be ordered in ascending order. If FALSE the order will be descending. This parameter is only relevant if `order_by` is specified. Default is FALSE}
-    \item{\code{select}}{One or multiple columns that should be selected and be part of the final result. Can be a vector or a single string.}
-    \item{\code{date_start}}{A string in the form of YYYY-MM-DD or YYYY that represents the start of the date range. `date_var` must be specified, otherwise this parameter won't be evaluated. If `date_end` is not specified, all dataset records from this date on will be returned.}
-    \item{\code{date_end}}{A string in the form of YYYY-MM-DD or YYYY that represents the start of the date range. `date_var` must be specified, otherwise this parameter won't be evaluated. If `date_start` is not specified, all dataset records up to this date will be returned.}
-    \item{\code{date_var}}{The variable to which `date_end` and `date_end` refer. Prameter will only be evaluated if either `date_end` or `date_start` is specified}
-    \item{\code{filter_query}}{A query string where binary operators can be used (see \href{https://help.opendatasoft.com/apis/ods-explore-v2/#section/ODSQL-predicates/Text-comparison-operators}{ODS cocumentation on binary operators}). This can either be a string or a vector of multiple strings. For example 'einwohner>=100' or c('einwohner>=100','gemeinde_name="Aadorf"'). Please note that if you use the equal sign for a string, the string has to be enquoted inside the already enqueted query string(e.g. 'gemeinde_name="Aadorf"' and NOT 'gemeinde_name=Aadorf')}
-  }}
+\item{group_by_fields}{Vector of fields to group by. See [ODSQL Group by clause](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Group-by-clause).}
+
+\item{order_by_fields}{Vector of fields to order by. See [ODSQL Order by clause](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Order-by-clause).}
+
+\item{select_fields}{Vector of fields to be selected. See [ODSQL select clause](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Select-clause).}
+
+\item{predicates}{See [ODSQL predicates](https://help.opendatasoft.com/apis/ods-explore-v2/#section/ODSQL-predicates).}
+
+\item{key}{API key for authentication.}
+
+\item{...}{Where clause parameters. See [ODSQL where clause](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Where-clause). You can also use `from` and `to` to select a timespan. The function will automatically use the first variable of type date and apply the timespan on that variable.}
 }
 \value{
-A dataframe of records based on the query
+A dataset.
 }
 \description{
-Query dataset to select and filter a dataset on ODS
+Query a dataset and use [ODSQL Syntax](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)) to refine your query. With this function, it is possible to download only the needed part of the dataset.
 }
 \examples{
 \dontrun{
-
-query_dataset(dataset_id = "sk-stat-112",search_in="bezirk_bezeichnung",search_for="Frauenfeld",order_by="plz",asc=FALSE,select=c("bezirk_bezeichnung","plz","ortschaft"))
+dataset <- query_dataset(
+  dataset_id = "example_dataset",
+  group_by_fields = c("field1", "field2"),
+  order_by_fields = c("field3"),
+  select_fields = c("field1", "field2"),
+  .domain = "your_domain.opendatasoft.com",
+  key = "your_api_key",
+  from = "2020-01-01",
+  to = "2021-01-01"
+)
+print(dataset)
 }
 }
