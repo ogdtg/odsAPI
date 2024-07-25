@@ -6,7 +6,7 @@ Author: Felix Lorenz
 Maintainer: Felix Lorenz <ogd@tg.ch>
 Description: Use the API of the data platforms created by Opendatasoft.
     Download Open Government Data (OGD), the data catalog, specific records or perform queries on datasets.
-License: MIT + file LICENSE
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Imports: 
