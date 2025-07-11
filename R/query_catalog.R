@@ -26,7 +26,7 @@ query_catalog <- function(domain = NULL,...){
                      "/api/explore/",
                      odsAPI::current_version,
                      "/catalog/datasets?",
-                     query)
+                     full_query)
 
   url <- paste0(url_part,"&limit=100")
 
@@ -60,14 +60,14 @@ query_catalog <- function(domain = NULL,...){
       offset <- offset + limit
       total <- offset +limit
 
-      query <- URLencode(paste0(query,"&offset=",offset))
+      full_query <- URLencode(paste0(full_query,"&offset=",offset))
 
       url <- paste0("https://",
                     domain,
                     "/api/explore/",
                     odsAPI::current_version,
                     "/catalog/datasets?",
-                    query)
+                    full_query)
 
       res <- httr::GET(url)
       temp_result <- httr::content(res,as = "text")
